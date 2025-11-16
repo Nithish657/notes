@@ -1,179 +1,118 @@
-:root {
-  --bg: #f4f6f8;
-  --card: #ffffff;
-  --accent: #2d7fff;
-  --text: #111827;
-  --muted: #6b7280;
+
+const fileBtn = document.getElementById("fileBtn");
+const editBtn = document.getElementById("editBtn");
+const fileMenu = document.getElementById("fileMenu");
+const editMenu = document.getElementById("editMenu");
+const quickSave = document.getElementById("quickSave");
+
+const titleInput = document.getElementById("noteTitle");
+const bodyInput = document.getElementById("noteBody");
+const searchInput = document.getElementById("search");
+
+const fileImport = document.getElementById("fileImport");
+const backupUpload = document.getElementById("backupUpload");
+
+function closeMenus() {
+  fileMenu.style.display = "none";
+  editMenu.style.display = "none";
 }
 
-html, body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: var(--bg);
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+fileBtn.onclick = () => {
+  editMenu.style.display = "none";
+  fileMenu.style.display = fileMenu.style.display === "flex" ? "none" : "flex";
+};
 
-header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 14px 18px;
-  background: var(--card);
-  border-bottom: 1px solid rgb(0, 0, 0);
-}
+editBtn.onclick = () => {
+  fileMenu.style.display = "none";
+  editMenu.style.display = editMenu.style.display === "flex" ? "none" : "flex";
+};
 
-.title {
-  font-weight: 20%;
-  font-size: 38px;
-}
+document.addEventListener("click", (e) => {
+  if (!fileBtn.contains(e.target) && !editBtn.contains(e.target)) closeMenus();
+});
 
-.search-wrap {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.search-wrap input {
-  width: 60%;
-  max-width: 800px;
-  min-width: 220px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(0,0,0,0.08);
-  outline: none;
-  font-size: 14px;
-}
-
-.search-wrap input:focus {
-  box-shadow: 0 4px 12px rgba(45,127,255,0.12);
-  border-color: rgba(45,127,255,0.25);
-}
-
-.menu-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 10px 18px;
-  background: transparent;
-}
-
-.menu-button {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--card);
-  border: 1px solid rgba(0,0,0,0.06);
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.menu-button:hover {
-  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
-}
-
-.dropdown {
-  display: none; 
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  min-width: 200px;
-  background: var(--card);
-  border: 1px solid rgba(0,0,0,0.06);
-  padding: 8px;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
-  z-index: 60;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.dropdown button {
-  width: 100%;
-  text-align: left;
-  padding: 8px 10px;
-  background: none;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.dropdown button:hover {
-  background: rgba(45,127,255,0.06);
-}
-
-#quickSave {
-  margin-left: auto;
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-#quickSave:active {
-  transform: translateY(1px);
-}
-
-.editor {
-  padding: 16px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  height: calc(100vh - 140px);
-}
-
-#noteTitle {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(0,0,0,0.08);
-  font-size: 16px;
-  outline: none;
-}
-
-#noteTitle:focus {
-  box-shadow: 0 6px 20px rgba(45,127,255,0.08);
-}
-
-#noteBody {
-  flex: 1;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.08);
-  resize: none;
-  font-size: 15px;
-  line-height: 1.6;
-  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-}
-
-#noteBody:focus {
-  box-shadow: 0 8px 28px rgba(45,127,255,0.06);
-}
-
-.small-muted {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-@media (max-width: 720px) {
-  .search-wrap input {
-    width: 92%;
+function runAction(action) {
+  switch (action) {
+    case "new": newNote(); break;
+    case "save": saveNote(); break;
+    case "saveas": saveAsFile(); break;
+    case "import": fileImport.click(); break;
+    case "upload": backupUpload.click(); break;
+    case "exit": closeMenus(); break;
   }
-
-  #quickSave {
-    padding: 8px 10px;
-  }
-
-  .menu-row { padding: 8px 12px; }
-  header { padding: 10px 12px; }
 }
+
+fileMenu.querySelectorAll("button").forEach(btn => {
+  btn.onclick = () => runAction(btn.dataset.action);
+});
+
+editMenu.querySelectorAll("button").forEach(btn => {
+  btn.onclick = () => runAction(btn.dataset.action);
+});
+
+function newNote() {
+  titleInput.value = "";
+  bodyInput.value = "";
+}
+
+function saveNote() {
+  const note = {
+    title: titleInput.value,
+    body: bodyInput.value
+  };
+
+  localStorage.setItem("savedNote", JSON.stringify(note));
+  alert("Note saved!");
+}
+
+window.onload = () => {
+  const saved = localStorage.getItem("savedNote");
+  if (saved) {
+    const note = JSON.parse(saved);
+    titleInput.value = note.title;
+    bodyInput.value = note.body;
+  }
+};
+
+quickSave.onclick = saveNote;
+
+function saveAsFile() {
+  const text = `${titleInput.value}\n\n${bodyInput.value}`;
+  const blob = new Blob([text], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${titleInput.value || "note"}.txt`;
+  a.click();
+}
+
+fileImport.onchange = () => {
+  const file = fileImport.files[0];
+  const reader = new FileReader();
+  reader.onload = () => {
+    bodyInput.value = reader.result;
+  };
+  reader.readAsText(file);
+};
+
+backupUpload.onchange = () => {
+  const file = backupUpload.files[0];
+  const reader = new FileReader();
+  reader.onload = () => {
+    const note = JSON.parse(reader.result);
+    titleInput.value = note.title;
+    bodyInput.value = note.body;
+  };
+  reader.readAsText(file);
+};
+
+searchInput.addEventListener("input", () => {
+  const text = bodyInput.value.toLowerCase();
+  const term = searchInput.value.toLowerCase();
+
+  if (term && text.includes(term)) {
+    bodyInput.style.background = "#fffdc4";
+  } else {
+    bodyInput.style.background = "#fff";
+  }
+});
+
