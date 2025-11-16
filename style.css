@@ -1,109 +1,180 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --accent: #2d7fff;
+  --text: #111827;
+  --muted: #6b7280;
 }
 
+html, body {
+  height: 100%;
+}
 body {
-  background: #f1f3f4;
-  padding: 20px;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 20px;
+  padding: 14px 18px;
+  background: var(--card);
+  border-bottom: 1px solid rgb(0, 0, 0);
 }
 
-header h2 {
+.title {
+  font-weight: 20%;
   font-size: 38px;
-  padding: 10px 30px;
-  color: #333;
 }
 
-#search {
-  padding: 10px 15px;
-  width: 350px;
+.search-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-wrap input {
+  width: 60%;
+  max-width: 800px;
+  min-width: 220px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+  outline: none;
+  font-size: 14px;
+}
+
+.search-wrap input:focus {
+  box-shadow: 0 4px 12px rgba(45,127,255,0.12);
+  border-color: rgba(45,127,255,0.25);
+}
+
+.menu-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 18px;
+  background: transparent;
+}
+
+.menu-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.menu-button:hover {
+  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+}
+
+.dropdown {
+  display: none; 
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+  z-index: 60;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dropdown button {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  background: none;
+  border: none;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
 }
 
+.dropdown button:hover {
+  background: rgba(45,127,255,0.06);
+}
 
-.note-input {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+#quickSave {
+  margin-left: auto;
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#quickSave:active {
+  transform: translateY(1px);
+}
+
+.editor {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: calc(100vh - 140px);
 }
 
 #noteTitle {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: none;
-  border-bottom: 1px solid #ccc;
-  outline: none;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-#noteText {
-  width: 100%;
-  height: 100px;
-  padding: 10px;
-  border: none;
-  outline: none;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
   font-size: 16px;
+  outline: none;
 }
 
-#addNoteBtn {
-  margin-top: 10px;
-  padding: 10px 20px;
-  border: none;
-  background: #1a73e8;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
+#noteTitle:focus {
+  box-shadow: 0 6px 20px rgba(45,127,255,0.08);
 }
 
-#addNoteBtn:hover {
-  background: #0b57d0;
-}
-
-.notes-container {
-  display: grid;
-  gap: 15px;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-}
-
-.note {
-  background: #fff;
-  padding: 15px;
-  position: relative;
+#noteBody {
+  flex: 1;
+  padding: 14px;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-
-.note-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.note p {
+  border: 1px solid rgba(0,0,0,0.08);
+  resize: none;
   font-size: 15px;
-  color: #333;
+  line-height: 1.6;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
 }
 
-.delete-btn {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  cursor: pointer;
-  color: red;
-  font-weight: bold;
-  font-size: 18px;
+#noteBody:focus {
+  box-shadow: 0 8px 28px rgba(45,127,255,0.06);
 }
+
+.small-muted {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 720px) {
+  .search-wrap input {
+    width: 92%;
+  }
+
+  #quickSave {
+    padding: 8px 10px;
+  }
+
+  .menu-row { padding: 8px 12px; }
+  header { padding: 10px 12px; }
+}
+
