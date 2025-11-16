@@ -1,71 +1,179 @@
-let notesContainer = document.getElementById("notesContainer");
-let addNoteBtn = document.getElementById("addNoteBtn");
-let noteTitle = document.getElementById("noteTitle");
-let noteText = document.getElementById("noteText");
-let search = document.getElementById("search");
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --accent: #2d7fff;
+  --text: #111827;
+  --muted: #6b7280;
+}
 
-showNotes();
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-addNoteBtn.onclick = () => {
-  let notes = localStorage.getItem("notes");
-  let notesObj = notes ? JSON.parse(notes) : [];
+header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 18px;
+  background: var(--card);
+  border-bottom: 1px solid rgb(0, 0, 0);
+}
 
-  if (noteTitle.value.trim() === "" || noteText.value.trim() === "") {
-    return alert("Title and Note cannot be empty");
+.title {
+  font-weight: 20%;
+  font-size: 38px;
+}
+
+.search-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-wrap input {
+  width: 60%;
+  max-width: 800px;
+  min-width: 220px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+  outline: none;
+  font-size: 14px;
+}
+
+.search-wrap input:focus {
+  box-shadow: 0 4px 12px rgba(45,127,255,0.12);
+  border-color: rgba(45,127,255,0.25);
+}
+
+.menu-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 18px;
+  background: transparent;
+}
+
+.menu-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.menu-button:hover {
+  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+}
+
+.dropdown {
+  display: none; 
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+  z-index: 60;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dropdown button {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dropdown button:hover {
+  background: rgba(45,127,255,0.06);
+}
+
+#quickSave {
+  margin-left: auto;
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#quickSave:active {
+  transform: translateY(1px);
+}
+
+.editor {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: calc(100vh - 140px);
+}
+
+#noteTitle {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+  font-size: 16px;
+  outline: none;
+}
+
+#noteTitle:focus {
+  box-shadow: 0 6px 20px rgba(45,127,255,0.08);
+}
+
+#noteBody {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.08);
+  resize: none;
+  font-size: 15px;
+  line-height: 1.6;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+#noteBody:focus {
+  box-shadow: 0 8px 28px rgba(45,127,255,0.06);
+}
+
+.small-muted {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 720px) {
+  .search-wrap input {
+    width: 92%;
   }
 
-  let newNote = {
-    title: noteTitle.value,
-    text: noteText.value
-  };
+  #quickSave {
+    padding: 8px 10px;
+  }
 
-  notesObj.push(newNote);
-  localStorage.setItem("notes", JSON.stringify(notesObj));
-
-  noteTitle.value = "";
-  noteText.value = "";
-  
-  showNotes();
-};
-
-function showNotes() {
-  let notes = localStorage.getItem("notes");
-  let notesObj = notes ? JSON.parse(notes) : [];
-
-  notesContainer.innerHTML = "";
-
-  notesObj.forEach((note, index) => {
-    notesContainer.innerHTML += `
-      <div class="note">
-        <span class="delete-btn" onclick="deleteNote(${index})">×</span>
-        <div class="note-title">${note.title}</div>
-        <p>${note.text}</p>
-      </div>
-    `;
-  });
+  .menu-row { padding: 8px 12px; }
+  header { padding: 10px 12px; }
 }
-
-
-function deleteNote(index) {
-  let notes = JSON.parse(localStorage.getItem("notes"));
-  notes.splice(index, 1);
-  localStorage.setItem("notes", JSON.stringify(notes));
-  showNotes();
-}
-
-// Search Notes
-search.addEventListener("input", () => {
-  let filter = search.value.toLowerCase();
-  let notes = document.querySelectorAll(".note");
-
-  notes.forEach(note => {
-    let title = note.querySelector(".note-title").innerText.toLowerCase();
-    let text = note.querySelector("p").innerText.toLowerCase();
-
-    if (title.includes(filter) || text.includes(filter)) {
-      note.style.display = "block";
-    } else {
-      note.style.display = "none";
-    }
-  });
-});
