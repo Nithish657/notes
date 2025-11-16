@@ -29,7 +29,7 @@ header {
 
 .title {
   font-weight: 20%;
-  font-size: 38px;
+  font-size: 10px;
 }
 
 .search-wrap {
@@ -177,4 +177,5 @@ header {
   .menu-row { padding: 8px 12px; }
   header { padding: 10px 12px; }
 }
+
 
