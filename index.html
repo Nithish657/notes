@@ -1,25 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notepad App</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Notepad</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <header>
-    <h2>My Notes</h2>
-    <input type="text" id="search" placeholder="Search notes...">
+    <div class="title">My Notepad</div>
+    <div class="search-wrap"><input id="search" placeholder="Search text inside note..."></div>
   </header>
 
-  <div class="note-input">
-    <input type="text" id="noteTitle" placeholder="Note Title (Filename)">
-    <textarea id="noteText" placeholder="Write your note..."></textarea>
-    <button id="addNoteBtn">Add Note</button>
+  <div class="menu-row">
+    <div class="menu-button" id="fileBtn">File ▾
+      <div class="dropdown" id="fileMenu">
+        <button data-action="new">New Note</button>
+        <button data-action="save">Save Note</button>
+        <button data-action="saveas">Save As File</button>
+        <button data-action="import">Import .txt</button>
+        <button data-action="upload">Upload Backup (.json)</button>
+        <button data-action="exit">Exit</button>
+      </div>
+    </div>
+
+    <div class="menu-button" id="editBtn">Edit ▾
+      <div class="dropdown" id="editMenu">
+        <button data-action="new">New Note</button>
+        <button data-action="save">Save Note</button>
+        <button data-action="saveas">Save As File</button>
+        <button data-action="import">Import .txt</button>
+        <button data-action="upload">Upload Backup (.json)</button>
+        <button data-action="exit">Exit</button>
+      </div>
+    </div>
+
+    <button id="quickSave">Save</button>
   </div>
 
-  <div id="notesContainer" class="notes-container"></div>
+  <div class="editor">
+    <input id="noteTitle" placeholder="Title...">
+    <textarea id="noteBody" placeholder="Write your note here..."></textarea>
+  </div>
+
+  <input type="file" id="fileImport" accept=".txt" style="display:none">
+  <input type="file" id="backupUpload" accept=".json" style="display:none">
 
   <script src="script.js"></script>
 </body>
